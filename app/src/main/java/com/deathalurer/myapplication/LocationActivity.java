@@ -1,6 +1,7 @@
 package com.deathalurer.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -18,8 +19,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,8 +33,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -59,10 +70,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         locationSelected = findViewById(R.id.locationSelectedTextView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
-        mapView.getMapAsync(this);
 
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         PlacesClient placesClient = Places.createClient(this);
+        fields = Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG);
 
         SharedPreferences sharedPreferences = getSharedPreferences("WalletPoints", Context.MODE_PRIVATE);
         if (sharedPreferences.contains("LocationSelected")){
@@ -101,7 +112,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                                     editor.apply();
                                     pickButton.setVisibility(View.INVISIBLE);
                                     currentButton.setVisibility(View.INVISIBLE);
-                                    locationSelected.setText("Latitude: " + latitude +"\nLongitude: " +
+                                    locationSelected.setText("Home Location :\n"+"Latitude: " + latitude +"\nLongitude: " +
                                             longitude);
                                     locationSelected.setVisibility(View.VISIBLE);
                                     goTo.setVisibility(View.VISIBLE);
@@ -122,6 +133,42 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(intent);
             }
         });
+
+        // to pick location...
+        pickButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.FULLSCREEN, fields)
+                        .build(LocationActivity.this);
+                startActivityForResult(intent, 1);
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode == RESULT_OK){
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                placeName = place.getName();
+                placeLatLng = place.getLatLng();
+                mMap.addMarker(new MarkerOptions().position(placeLatLng).title(placeName));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(placeLatLng));
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(placeLatLng,15);
+                mMap.animateCamera(cameraUpdate);
+            }
+            else if(resultCode == AutocompleteActivity.RESULT_ERROR){
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i("_______", status.getStatusMessage());
+            }
+            else {
+                Log.e("_____","Cancelled");
+            }
+        }
     }
     void isPermissionGranted(){
         Log.e(TAG, "isPermissionGranted: " );

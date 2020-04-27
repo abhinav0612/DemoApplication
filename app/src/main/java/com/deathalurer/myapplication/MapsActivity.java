@@ -56,6 +56,7 @@ public class MapsActivity extends AppCompatActivity {
     private static final String TAG = "MapActivity" ;
     private List<Place.Field> fields;
     private String placeName;
+    private boolean isBackPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,51 +91,8 @@ public class MapsActivity extends AppCompatActivity {
             }
         });
 
-//
-//        List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME);
-//        FindCurrentPlaceRequest request =
-//                FindCurrentPlaceRequest.builder(placeFields).build();
-//        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            placesClient.findCurrentPlace(request).addOnSuccessListener(((response) -> {
-//                for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
-//                    Log.i("_____", String.format("Place '%s' has likelihood: %f",
-//                            placeLikelihood.getPlace().getName(),
-//                            placeLikelihood.getLikelihood()));
-//                }
-//            })).addOnFailureListener((exception) -> {
-//                if (exception instanceof ApiException) {
-//                    ApiException apiException = (ApiException) exception;
-//                    Log.e("____", "Place not found: " + apiException.getStatusCode());
-//                }
-//            });
-//        } else {
-//            Log.e("____","No permission");
-//        }
-        /////////////////////////////////////////
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == 1){
-//            if(resultCode == RESULT_OK){
-//                Place place = Autocomplete.getPlaceFromIntent(data);
-//                placeName = place.getName();
-//                placeLatLng = place.getLatLng();
-//                mMap.addMarker(new MarkerOptions().position(placeLatLng).title(placeName));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(placeLatLng));
-//                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(placeLatLng,15);
-//                mMap.animateCamera(cameraUpdate);
-//            }
-//            else if(resultCode == AutocompleteActivity.RESULT_ERROR){
-//                Status status = Autocomplete.getStatusFromIntent(data);
-//                Log.i("_______", status.getStatusMessage());
-//            }
-//            else {
-//                Log.e("_____","Cancelled");
-//            }
-//        }
-//    }
 
 
     private void check() {
@@ -166,6 +124,18 @@ public class MapsActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_COARSE_LOCATION,
                             Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 2);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isBackPressed){
+            super.onBackPressed();
+        }
+        else {
+            Toast.makeText(this,"Press back again to exit",Toast.LENGTH_SHORT).show();
+            isBackPressed = true;
+        }
+
     }
 
     @Override

@@ -143,17 +143,17 @@ public class Fragment_Two extends Fragment implements OnMapReadyCallback {
                             Log.e(TAG, "isWithin: " + isWithin );
                             if(isWithin){
                                 if (!sharedPreferences.contains("Coins")){
+                                    //Toast.makeText(getActivity(),"10 points added.",Toast.LENGTH_SHORT).show();
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putInt("Coins",10);
                                     editor.apply();
-                                    Toast.makeText(getActivity(),"10 points added.",Toast.LENGTH_SHORT).show();
                                 }
                                 else{
+                                    //Toast.makeText(getActivity(),"10 points added.",Toast.LENGTH_SHORT).show();
                                     int current = sharedPreferences.getInt("Coins",0);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putInt("Coins",current +10);
                                     editor.apply();
-                                    Toast.makeText(getActivity(),"10 points added.",Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else {
@@ -167,7 +167,6 @@ public class Fragment_Two extends Fragment implements OnMapReadyCallback {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putInt("Coins",current - 10);
                                     editor.apply();
-                                    Toast.makeText(getActivity(),"10 points deducted.",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -185,7 +184,7 @@ public class Fragment_Two extends Fragment implements OnMapReadyCallback {
 
     protected void createLocationRequest() {
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(17000);
+        locationRequest.setInterval(20000);
         //locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 

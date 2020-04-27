@@ -41,11 +41,11 @@ public class Fragment_Three extends Fragment {
         preferences = this.getActivity().getSharedPreferences("WalletPoints", Context.MODE_PRIVATE);
         textView.setText(0+"");
 
-        if(preferences.contains("Coins")){
-            int coins = preferences.getInt("Coins",1);
-            textView.setText(coins+"");
-        }
-        timer = new CountDownTimer(20000,1000) {
+//        if(preferences.contains("Coins")){
+//            int coins = preferences.getInt("Coins",1);
+//            textView.setText(coins+"");
+//        }
+        timer = new CountDownTimer(22000,1000) {
             @Override
             public void onTick(long l) {
             }
