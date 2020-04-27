@@ -131,6 +131,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             public void onClick(View view) {
                 Intent intent = new Intent(LocationActivity.this,MapsActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

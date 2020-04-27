@@ -45,7 +45,7 @@ public class Fragment_Three extends Fragment {
 //            int coins = preferences.getInt("Coins",1);
 //            textView.setText(coins+"");
 //        }
-        timer = new CountDownTimer(22000,1000) {
+        timer = new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long l) {
             }

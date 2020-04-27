@@ -97,7 +97,7 @@ public class Fragment_Two extends Fragment implements OnMapReadyCallback {
         sharedPreferences = this.getActivity().
                 getSharedPreferences("WalletPoints", Context.MODE_PRIVATE);
         boolean isAvailable = sharedPreferences.getBoolean("LocationSelected",false);
-        createLocationRequest();
+        //createLocationRequest();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         textView = view.findViewById(R.id.timerTextView);
         timer = new CountDownTimer(20000,1000) {
@@ -115,6 +115,7 @@ public class Fragment_Two extends Fragment implements OnMapReadyCallback {
 
         if(isAvailable){
             timer.start();
+            createLocationRequest();
         }
         else{
             textView.setText("Please select your home location!");
@@ -123,8 +124,9 @@ public class Fragment_Two extends Fragment implements OnMapReadyCallback {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                Log.e(TAG," Result" + locationResult);
+                Log.e(TAG," Inside Callback");
                 if (locationResult == null) {
+                    Log.e(TAG, "callback location null" );
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
@@ -185,7 +187,7 @@ public class Fragment_Two extends Fragment implements OnMapReadyCallback {
     protected void createLocationRequest() {
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(20000);
-        //locationRequest.setFastestInterval(5000);
+        locationRequest.setFastestInterval(20000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
