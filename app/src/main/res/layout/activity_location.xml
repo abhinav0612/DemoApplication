@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/pickLocation"
+        android:id="@+id/chooseCurrentLocation"
+        android:layout_centerHorizontal="true"
+        android:text="Select Current Location"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/pickLocation"
+        android:visibility="gone"
+        android:id="@+id/goToTimer"
+        android:layout_centerHorizontal="true"
+        android:text="Start earning coins"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/pickLocation"
+        android:text="Pick Location"/>
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:id="@+id/locationSelectedTextView"
+        android:gravity="center"
+        android:layout_marginTop="100dp"
+        android:text="You selected the following location"/>
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/locationSelectedTextView"
+        android:maxLines="2"
+        android:layout_marginTop="200dp"
+        android:id="@+id/note"
+        android:text="You can see the location selected by you in the given Map."/>
+    <com.google.android.gms.maps.MapView
+        android:layout_below="@id/note"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="400dp"
+        android:id="@+id/mapView"/>
+
+</RelativeLayout>
